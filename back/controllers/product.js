@@ -1,8 +1,8 @@
 const uuid = require('uuid/v1');
-const Product = require('../models/Product');
+const products = require('../models/Product');
 
 exports.getAllProducts = (req, res, next) => {
-  Product.find().then(
+  products.find(req.params).then(
     (products) => {
       const mappedProducts = products.map((product) => {
         product.imageUrl = req.protocol + '://' + req.get('host') + '/images/' + product.imageUrl;
@@ -18,7 +18,7 @@ exports.getAllProducts = (req, res, next) => {
 };
 
 exports.getOneProduct = (req, res, next) => {
-  Product.findById(req.params.id).then(
+  products.findById(req.params.id).then(
     (product) => {
       if (!product) {
         return res.status(404).send(new Error('Product not found!'));
@@ -59,7 +59,7 @@ exports.orderProducts = (req, res, next) => {
   let queries = [];
   for (let productId of req.body.products) {
     const queryPromise = new Promise((resolve, reject) => {
-      Product.findById(productId).then(
+      products.findById(productId).then(
         (product) => {
           if (!product) {
             reject('Product not found: ' + productId);
