@@ -38,7 +38,7 @@ const errorHandler = error => {
 
 const server = http.createServer((req, res)=> {
   // build file path
-  const filePath = path.join(__dirname, '../front', req.url === '/' ? 'index.html' : req.url)
+  const filePath = path.join(__dirname, '../', req.url === '/' ? 'index.html' : req.url)
   
   //    extension of file
   let extname = path.extname(filePath)
@@ -73,7 +73,7 @@ const server = http.createServer((req, res)=> {
         if((err.code) == 'ENOENT') {
           console.log(err)
             // page not found
-            fs.readFile(path.join(__dirname, '../front', '404.html'), 
+            fs.readFile(path.join(__dirname, '../', '404.html'), 
             (err, content) => {
                 res.writeHead(200, {'Content-Type': 'text/html'})
                 res.end(content, 'utf8')
