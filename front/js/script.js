@@ -16,7 +16,7 @@ fetch("http://localhost:3000/api/products")
     </article>
   </a>`;
   })
-  displayProducts = displayProducts.join('');
+  displayProducts = displayProducts.join('')
 
-  allItems.innerHTML = displayProducts;
+  allItems.innerHTML = displayProducts
 });

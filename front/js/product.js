@@ -1,4 +1,4 @@
-const pageTitle = document.title
+let pageTitle = document.title
 const img = document.querySelector('.item__img')
 const title = document.getElementById('title')
 const price = document.getElementById('price')
@@ -10,7 +10,6 @@ function getProductInfo() {
     let params = new
     URLSearchParams(document.location.search)
     let id = params.get("_id")
-    console.log(id)
 
     // fetch the product in the API 
     fetch(`http://localhost:3000/api/products/${id}`)
@@ -20,12 +19,17 @@ function getProductInfo() {
             }
         })
         .then(product => {
-            title = `${product.name}`
-            img.innerHTML = `<img src=${product.imageUrl} alt=${product.altText}>`
+            pageTitle = product.name
             title.innerHTML = `${product.name}`
+            img.innerHTML = `<img src=${product.imageUrl} alt=${product.altText}>`
             price.innerHTML = `${product.price}`
             description.innerHTML = `${product.description}`
-        })
+            let displayColors = product.colors.map(color => {
+                return `<option value=${color}>${color}</option>`
+            })
+            displayColors = displayColors.join('')
+            color.innerHTML = displayColors
+        })      
 }
 
 getProductInfo()
