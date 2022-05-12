@@ -11,7 +11,13 @@
   "license": "ISC",
   "dependencies": {
     "express": "^4.18.1",
+<<<<<<< HEAD
     "nodemon": "^2.0.16",
+=======
+>>>>>>> 67a7a12fe266ded16a5a4d4b9eae000f4b40a178
     "uuid": "^3.3.2"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.16"
   }
 }
