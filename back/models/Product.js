@@ -74,18 +74,13 @@ const products = [
 ];
 
 exports.find = () => {
-  return new Promise((resolve, reject) => resolve(JSON(products)))
+  return new Promise((resolve, reject) => resolve(JSON.parse(JSON.stringify(products))));
 }
 
 exports.findById = (id) => {
   return new Promise((resolve, reject) =>
-    resolve(JSON(products).find(product =>
+    resolve(JSON.parse(JSON.stringify(products)).find(product =>
       product._id == id)
     )
   );
 }
-
-module.exports = products
-
-
-
