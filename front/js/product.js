@@ -47,38 +47,35 @@ function addToLocalStorage() {
         // add a product to the list
         productsAdded = [{
                                 id : `${id}`,
-                                quantity : quantity.value,
+                                quantity : parseInt(quantity.value),
                                 color : color.value
                             }]
     } else {
-        for (i = 0; i< productsAdded.length; i++) {
+        let productToCheck = [
+            {
+                id: `${id}`,
+                quantity : parseInt(quantity.value),
+                color : color.value
+            }
+        ]
+        console.log(productToCheck.quantity)
+        for (i = 0; i < productsAdded.length; i++) {
             // get the product to check
-            productToCheck = [
-                {
-                    id: `${id}`,
-                    quantity : quantity.value,
-                    color : color.value
-                }
-            ]
             // if the color of the product to add is already in the list with the same id
             if (productToCheck.color === productsAdded[i].color && productToCheck.id === productsAdded[i].id) {
                 // add the quantity of the two products
                 let countOfProducts = productsAdded
                                         .push({
                                             id : productsAdded[i].id,
-                                            quantity : productToCheck.quantity.value + productsAdded[i].quantity.value,
-                                            color : productsAdded[i].color.value 
+                                            quantity : productToCheck.quantity + productsAdded[i].quantity,
+                                            color : productsAdded[i].color
                                         })
                                         // retrieve the element that was already there from the list
-                                        .pop(productsAdded[i])
+                                        productsAdded.splice(i, 1)
             } else {
                 // add the new product tot he list
             countOfProducts = productsAdded
-                                .push({
-                                    id : `${id}`,
-                                    quantity : quantity.value,
-                                    color : color.value 
-                                })
+                                .push(productToCheck)
             }
         }
     }
