@@ -37,19 +37,52 @@ getProductInfo()
 // add the product to the local storage
 const addToCart = document.getElementById('addToCart')
 const quantity = document.getElementById('quantity')
+let productsAdded = []
+const params = new
+URLSearchParams(document.location.search)
+const id = params.get("_id")
 
 function addToLocalStorage() {
-    const params = new
-    URLSearchParams(document.location.search)
-    const id = params.get("_id") 
-    let productSelected = [
-        {
-            id : `${id}`,
-            quantity : quantity.value,
-            color : color.value
+    if (productsAdded.length === 0 ) { 
+        // add a product to the list
+        productsAdded = [{
+                                id : `${id}`,
+                                quantity : quantity.value,
+                                color : color.value
+                            }]
+    } else {
+        for (i = 0; i< productsAdded.length; i++) {
+            // get the product to check
+            productToCheck = [
+                {
+                    id: `${id}`,
+                    quantity : quantity.value,
+                    color : color.value
+                }
+            ]
+            // if the color of the product to add is already in the list with the same id
+            if (productToCheck.color === productsAdded[i].color && productToCheck.id === productsAdded[i].id) {
+                // add the quantity of the two products
+                let countOfProducts = productsAdded
+                                        .push({
+                                            id : productsAdded[i].id,
+                                            quantity : productToCheck.quantity.value + productsAdded[i].quantity.value,
+                                            color : productsAdded[i].color.value 
+                                        })
+                                        // retrieve the element that was already there from the list
+                                        .pop(productsAdded[i])
+            } else {
+                // add the new product tot he list
+            countOfProducts = productsAdded
+                                .push({
+                                    id : `${id}`,
+                                    quantity : quantity.value,
+                                    color : color.value 
+                                })
+            }
         }
-    ]
-    localStorage.setItem('productSelected', JSON.stringify(productSelected))
+    }
+    localStorage.setItem('productsAdded', JSON.stringify(productsAdded))
 }
 
 addToCart.addEventListener('click', addToLocalStorage)
