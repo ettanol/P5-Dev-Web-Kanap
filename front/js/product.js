@@ -5,11 +5,12 @@ const price = document.getElementById('price')
 const description = document.getElementById('description')
 const color = document.getElementById('colors')
 
+const params = new
+URLSearchParams(document.location.search)
+const id = params.get("_id")
+
 function getProductInfo() {
     // get the parameter from the URL
-    const params = new
-    URLSearchParams(document.location.search)
-    const id = params.get("_id")
 
     // fetch the product in the API 
     fetch(`http://localhost:3000/api/products/${id}`)
@@ -38,48 +39,45 @@ getProductInfo()
 const addToCart = document.getElementById('addToCart')
 const quantity = document.getElementById('quantity')
 let productsAdded = []
-const params = new
-URLSearchParams(document.location.search)
-const id = params.get("_id")
 
 function addToLocalStorage() {
     if (productsAdded.length === 0 ) { 
         // add a product to the list
-        productsAdded = [{
-                                id : `${id}`,
-                                quantity : parseInt(quantity.value),
-                                color : color.value
-                            }]
+        var product = {
+                        id : `${id}`,
+                        quantity : parseInt(quantity.value),
+                        color : color.value
+                    }
+        var countOfProducts = productsAdded.push(product)
     } else {
-        let productToCheck = [
+        let productToCheck =
             {
                 id: `${id}`,
                 quantity : parseInt(quantity.value),
                 color : color.value
             }
-        ]
-        console.log(productToCheck.quantity)
-        for (i = 0; i < productsAdded.length; i++) {
-            // get the product to check
-            // if the color of the product to add is already in the list with the same id
-            if (productToCheck.color === productsAdded[i].color && productToCheck.id === productsAdded[i].id) {
-                // add the quantity of the two products
-                let countOfProducts = productsAdded
-                                        .push({
-                                            id : productsAdded[i].id,
-                                            quantity : productToCheck.quantity + productsAdded[i].quantity,
-                                            color : productsAdded[i].color
-                                        })
-                                        // retrieve the element that was already there from the list
-                                        productsAdded.splice(i, 1)
+            // if the element with the same id and color if found
+            if(productsAdded.find(product => {
+                    if(product.id === productToCheck.id && product.color === productToCheck.color) {
+                        // add the product quantity to the one already existing 
+                    product.quantity = productToCheck.quantity + product.quantity
+                    return product = {
+                        id : product.id,
+                        quantity : product.quantity,
+                        color : product.color
+                    }
+                }
+            })){
+                console.log("found")
             } else {
-                // add the new product tot he list
-            countOfProducts = productsAdded
-                                .push(productToCheck)
+                //  add the product to the list
+                countOfProducts = productsAdded
+                                    .push(productToCheck)
             }
+
         }
+            localStorage.setItem('productsAdded', JSON.stringify(productsAdded))
     }
-    localStorage.setItem('productsAdded', JSON.stringify(productsAdded))
-}
+
 
 addToCart.addEventListener('click', addToLocalStorage)
