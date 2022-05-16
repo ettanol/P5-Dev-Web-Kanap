@@ -38,10 +38,10 @@ getProductInfo()
 // add the product to the local storage
 const addToCart = document.getElementById('addToCart')
 const quantity = document.getElementById('quantity')
-let productsAdded = []
 
 function addToLocalStorage() {
-    if (productsAdded.length === 0 ) { 
+    if (localStorage.length === 0 ) { 
+        var productsAdded = []
         // add a product to the list
         var product = {
                         id : `${id}`,
@@ -49,7 +49,10 @@ function addToLocalStorage() {
                         color : color.value
                     }
         var countOfProducts = productsAdded.push(product)
+        alert("Le produit a bien été ajouté à votre panier")
     } else {
+        let productsAddedString = localStorage.getItem('productsAdded')
+        productsAdded = JSON.parse(productsAddedString)
         let productToCheck =
             {
                 id: `${id}`,
@@ -68,16 +71,18 @@ function addToLocalStorage() {
                     }
                 }
             })){
-                console.log("found")
+                alert("Votre panier est bien mis à jour")
             } else {
                 //  add the product to the list
                 countOfProducts = productsAdded
                                     .push(productToCheck)
+                alert("Le produit a bien été ajouté à votre panier")
             }
 
         }
-            localStorage.setItem('productsAdded', JSON.stringify(productsAdded))
-    }
+        let productsAddedString = JSON.stringify(productsAdded)
+        localStorage.setItem('productsAdded', productsAddedString)
+}
 
 
 addToCart.addEventListener('click', addToLocalStorage)
