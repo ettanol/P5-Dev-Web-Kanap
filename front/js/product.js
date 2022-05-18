@@ -46,8 +46,9 @@ function addToLocalStorage() {
         var product = {
                         id : `${id}`,
                         quantity : parseInt(quantity.value),
-                        color : color.value
-                    }
+                        color : color.value,
+                        price : parseInt(price.innerHTML)
+        }
         var countOfProducts = productsAdded.push(product)
         alert("Le produit a bien été ajouté à votre panier")
     } else {
@@ -57,7 +58,9 @@ function addToLocalStorage() {
             {
                 id: `${id}`,
                 quantity : parseInt(quantity.value),
-                color : color.value
+                color : color.value,
+                price : parseInt(price.innerHTML)
+
             }
             // if the element with the same id and color if found
             if(productsAdded.find(product => {
@@ -67,7 +70,8 @@ function addToLocalStorage() {
                     return product = {
                         id : product.id,
                         quantity : product.quantity,
-                        color : product.color
+                        color : product.color,
+                        price : product.price
                     }
                 }
             })){
