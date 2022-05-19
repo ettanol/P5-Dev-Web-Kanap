@@ -1,6 +1,30 @@
-// get the products from localStorage
-let productsAddedString = localStorage.getItem('productsAdded')
-const productsAdded = JSON.parse(productsAddedString)
+window.addEventListener('DOMContentLoaded',
+    () => {
+        let i=0
+        let checkLocalStorage = new Promise((resolve, reject) => {   
+            let productsAddedString = localStorage.getItem('productsAdded')
+            productsAdded = JSON.parse(productsAddedString)
+            if(productsAdded.length !== null) {
+                resolve(productsAdded)
+            } else {
+                reject('failed')
+           }
+        })
+          
+        checkLocalStorage.then((products) => { 
+              while(i < products.length) {
+              addProductToCart(i)
+              i++
+              }
+          } ,
+          (error) => { console.log(error) }
+        ) .catch ((error) => {
+            throw error
+        })            
+    }
+)
+    
+    //do whatever you want to do with localstorage
 
 // get elements from the dom
 let cartItems = document.getElementById('cart__items')
@@ -14,8 +38,8 @@ let total = 0
 let price = 0
 
 // separate all items using foreach?
-function addProductToCart(i) {
-    let item = productsAdded[i]
+async function addProductToCart(i) {
+    let item = await productsAdded[i]
     fetch(`http://localhost:3000/api/products/${item.id}`)
     .then(res => {
         if(res.ok) {
@@ -57,12 +81,4 @@ function addProductToCart(i) {
     })
 }
 
-const join = () => {
-    let i=0
-    while(i < productsAdded.length) {
-        addProductToCart(i)
-        i++
-    }
-}
 
-join()

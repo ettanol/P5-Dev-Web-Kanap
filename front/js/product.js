@@ -40,7 +40,7 @@ const addToCart = document.getElementById('addToCart')
 const quantity = document.getElementById('quantity')
 
 function addToLocalStorage() {
-    if (localStorage.length === 0 ) { 
+    if (localStorage.length === 0) { 
         var productsAdded = []
         // add a product to the list
         var product = {
