@@ -18,23 +18,28 @@ const matches = () => {
         formInput.addEventListener('change', (e) => {
             let name = e.currentTarget.name
             let value = e.currentTarget.value
-            let expression = /^([\p{L}]{2,20}( |-|'|.)? ?){1,4}/gu
+            let expression = /^([\p{L}]{2,20}( |-|'|\.)? ?){1,4}/gu
             let array = value.split(' ')
             switch(name) {
+                case("firstName" || "lastName"): 
+                array = [array.join(' ')]
+                break 
                 case ("email") :
                 expression = /^[a-zA-Z-0-9.-_]+\@{1}[a-z]{1,9}\.{1}[a-z]{2,5}$/g
                 break
                 case("address") : 
-                expression = /^([0-9]{1,4})?[ +,]?( *)([a-z]{2,9}\.?)( |-|')(([\p{L}]{2,12})( |-|')?){1,5}/g
+                expression = /^([0-9]{1,4})?( +|,)?( *)([a-z]{2,9}\.?)( |-|')(([\p{L}]{2,12})( |-|')?){1,5}/gu
+                array = [array.join(' ')]
                 break
                 case("city") : 
                 expression = /^([0-9]{5})? ?([a-zA-Z\p{L}\p{M}]+( |-)?){1,4}/gu
+                array = [array.join(' ')]
                 break
             }
             let testResult = expression.test(value)
             if(testResult) {
                 let match = value.match(expression)
-                if (match == array) {
+                if (match[0] == array[0]) {
                     console.log('pass')
                 } else {
                     console.log('not correct')
