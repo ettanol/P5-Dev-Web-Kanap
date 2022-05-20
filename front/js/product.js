@@ -49,8 +49,12 @@ function addToLocalStorage() {
                         color : color.value,
                         price : parseInt(price.innerHTML)
         }
-        var countOfProducts = productsAdded.push(product)
-        alert("Le produit a bien été ajouté à votre panier")
+        if (product.quantity !== 0) {
+            var countOfProducts = productsAdded.push(product)
+            alert("Le produit a bien été ajouté à votre panier")
+        } else {
+            alert("Veuillez ajouter au moins un produit.")
+        }
     } else {
         let productsAddedString = localStorage.getItem('productsAdded')
         productsAdded = JSON.parse(productsAddedString)
@@ -78,9 +82,13 @@ function addToLocalStorage() {
                 alert("Votre panier est bien mis à jour")
             } else {
                 //  add the product to the list
-                countOfProducts = productsAdded
-                                    .push(productToCheck)
-                alert("Le produit a bien été ajouté à votre panier")
+                if (productToCheck.quantity !== 0) {
+                    countOfProducts = productsAdded
+                                        .push(productToCheck)
+                    alert("Le produit a bien été ajouté à votre panier")
+                } else {
+                    alert("Veuillez ajouter au moins un produit.")
+                }
             }
 
         }
