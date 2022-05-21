@@ -1,11 +1,12 @@
 window.addEventListener('DOMContentLoaded',
     () => {
         let i=0
+        // wait for localStorage to load
         let checkLocalStorage = new Promise((resolve, reject) => {   
-            let productsAddedString = localStorage.getItem('productsAdded')
-            productsAdded = JSON.parse(productsAddedString)
-            if(productsAdded.length !== null) {
-                resolve(productsAdded)
+            let productsString = localStorage.getItem('products')
+            products = JSON.parse(productsString)
+            if(products.length !== null) {
+                resolve(products)
             } else {
                 reject('failed')
            }
@@ -23,8 +24,6 @@ window.addEventListener('DOMContentLoaded',
         })            
     }
 )
-    
-    //do whatever you want to do with localstorage
 
 // get elements from the dom
 let cartItems = document.getElementById('cart__items')
@@ -37,9 +36,9 @@ let itemsInThecart = 0
 let total = 0
 let price = 0
 
-// separate all items using foreach?
+// waiting for products to be loaded then display them to the cart page
 async function addProductToCart(i) {
-    let item = await productsAdded[i]
+    let item = await products[i]
     fetch(`http://localhost:3000/api/products/${item.id}`)
     .then(res => {
         if(res.ok) {
@@ -72,7 +71,7 @@ async function addProductToCart(i) {
                 </div>
             </article>`
             itemsInThecart = cart.push(productToAdd)
-            if(i === productsAdded.length -1) {
+            if(i === products.length -1) {
                 cart = cart.join('')
                 cartItems.innerHTML = cart
                 totalQuantity.innerHTML = total

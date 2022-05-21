@@ -5,14 +5,13 @@ const price = document.getElementById('price')
 const description = document.getElementById('description')
 const color = document.getElementById('colors')
 
+// get the ID from the URL
 const params = new
 URLSearchParams(document.location.search)
 const id = params.get("_id")
 
+// get all infos from the API
 function getProductInfo() {
-    // get the parameter from the URL
-
-    // fetch the product in the API 
     fetch(`http://localhost:3000/api/products/${id}`)
         .then(res => {
             if(res.ok) {
@@ -35,65 +34,69 @@ function getProductInfo() {
 }
 getProductInfo()
 
-// add the product to the local storage
 const addToCart = document.getElementById('addToCart')
 const quantity = document.getElementById('quantity')
 
+// add the product to the local storage
 function addToLocalStorage() {
     if (localStorage.length === 0) { 
-        var productsAdded = []
-        // add a product to the list
+        var products = []
+        // add the product to the list
         var product = {
                         id : `${id}`,
                         quantity : parseInt(quantity.value),
                         color : color.value,
-                        price : parseInt(price.innerHTML)
         }
         if (product.quantity !== 0) {
-            var countOfProducts = productsAdded.push(product)
+            var countOfProducts = products.push(product)
             alert("Le produit a bien été ajouté à votre panier")
         } else {
             alert("Veuillez ajouter au moins un produit.")
         }
     } else {
-        let productsAddedString = localStorage.getItem('productsAdded')
-        productsAdded = JSON.parse(productsAddedString)
+        // retrieve all products already added
+        let productsString = localStorage.getItem('products')
+        products = JSON.parse(productsString)
         let productToCheck =
             {
                 id: `${id}`,
                 quantity : parseInt(quantity.value),
                 color : color.value,
-                price : parseInt(price.innerHTML)
 
             }
-            // if the element with the same id and color if found
-            if(productsAdded.find(product => {
-                    if(product.id === productToCheck.id && product.color === productToCheck.color) {
-                        // add the product quantity to the one already existing 
-                    product.quantity = productToCheck.quantity + product.quantity
-                    return product = {
-                        id : product.id,
-                        quantity : product.quantity,
-                        color : product.color,
-                        price : product.price
+        // if there's already a product with same color and same id
+        if(products.find(product => {
+                if(product.id === productToCheck.id && product.color === productToCheck.color) {
+                    // add the product quantity to the one already existing 
+                product.quantity = productToCheck.quantity + product.quantity
+                return product = {
+                    id : product.id,
+                    quantity : product.quantity,
+                    color : product.color,
+                }
+            }
+        })){
+            alert("Votre panier est bien mis à jour")
+        } else {
+            //  add the product to the list
+            if (productToCheck.quantity !== 0) {
+                countOfProducts = products
+                                    .push(productToCheck)
+                for (i =0; i < products.length -1; i++) {
+                    previousProductToSort = parseInt(products[i].id[0])
+                    nextProductToSort = parseInt(products[i+1].id[0])
+                    if (previousProductToSort <= nextProductToSort){
+                        products.sort(() => {nextProductToSort -previousProductToSort})
                     }
                 }
-            })){
-                alert("Votre panier est bien mis à jour")
+                alert("Le produit a bien été ajouté à votre panier")
             } else {
-                //  add the product to the list
-                if (productToCheck.quantity !== 0) {
-                    countOfProducts = productsAdded
-                                        .push(productToCheck)
-                    alert("Le produit a bien été ajouté à votre panier")
-                } else {
-                    alert("Veuillez ajouter au moins un produit.")
-                }
+                alert("Veuillez ajouter au moins un produit.")
             }
-
         }
-        let productsAddedString = JSON.stringify(productsAdded)
-        localStorage.setItem('productsAdded', productsAddedString)
+    }
+        let productsString = JSON.stringify(products)
+        localStorage.setItem('products', productsString)
 }
 
 

@@ -1,5 +1,6 @@
 const allItems = document.querySelector("#items");
 
+// get all products available and display on the page
 fetch("http://localhost:3000/api/products") 
     .then(res => {
         if(res.ok) {
