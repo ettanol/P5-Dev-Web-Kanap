@@ -2,7 +2,7 @@ const form = document.getElementsByClassName('cart__order__form__question')
 const order = document.getElementById('order')
 
 let isValidArray = [false, false, false, false, false]
-let contact = ["", "", "", "", ""]
+let contact = [{firstName : ""},{lastName : ""},{address : ""},{city : ""},{email : ""}]
 
 let productsString = localStorage.getItem('products')
 let products = JSON.parse(productsString)
@@ -14,6 +14,7 @@ const matches = () => {
         let index = i
         formInput.addEventListener('change', (e) => {
             let name = e.currentTarget.name
+            let id = e.currentTarget.id
             let value = e.currentTarget.value
             let expression = /^([\p{L}]{1,20}( |-|'|\.)? ?){1,4}/gu
             let array = value.split(' ')
@@ -40,7 +41,7 @@ const matches = () => {
                 if (match[0] == array[0]) {
                     document.getElementById(`${name}ErrorMsg`).innerHTML = `${name} valide`
                     isValid = true
-                    contact.splice(index, 1, value)
+                    contact.id = value
                     isValidArray.splice(index, 1, isValid)
                 } else {
                     document.getElementById(`${name}ErrorMsg`).innerHTML = `${name} non valide`
@@ -68,7 +69,7 @@ const getProductsID = () => {
             }
         })
         .then(product => {
-            let countOfProductsID = productsID.push(product)
+            let countOfProductsID = productsID.push(product._id)
             return productsID
         })
     })

@@ -82,13 +82,17 @@ function addToLocalStorage() {
             if (productToCheck.quantity !== 0) {
                 countOfProducts = products
                                     .push(productToCheck)
+
+                // not working
                 for (i =0; i < products.length -1; i++) {
-                    previousProductToSort = parseInt(products[i].id[0])
-                    nextProductToSort = parseInt(products[i+1].id[0])
-                    if (previousProductToSort <= nextProductToSort){
-                        products.sort(() => {nextProductToSort -previousProductToSort})
-                    }
+                    previousProductToSort = products[i].id[0]
+                    nextProductToSort = products[i+1].id[0]
+                    if (typeof(previousProductToSort) === typeof(nextProductToSort)){
+                        if (previousProductToSort <= nextProductToSort){
+                            products.sort(() => {nextProductToSort -previousProductToSort})
+                    }}
                 }
+                // not working
                 alert("Le produit a bien été ajouté à votre panier")
             } else {
                 alert("Veuillez ajouter au moins un produit.")
