@@ -83,7 +83,7 @@ setTimeout(() => {
 
 // form validation
 
-const form = document.getElementsByClassName('cart__order__form__question')
+const form = document.querySelectorAll('cart__order__form__question')
 const order = document.getElementById('order')
 
 let isValidArray = [false, false, false, false, false]
@@ -172,6 +172,9 @@ order.addEventListener('click', (e) => {
     if (isValidArray.includes(false)) {
         alert ("Veuillez vérifier le formulaire")
     } else {
+        form.forEach(() => {
+            form.input.value = ""
+        })
         fetch("http://localhost:3000/api/products/order", {
             method: "POST",
             headers: { 
@@ -182,13 +185,11 @@ order.addEventListener('click', (e) => {
         })
         .then(res => {
             if(res.ok) {
-                return JSON.parse(res)
+                return res.json()
             }
         })
         .then ((body) => {
-            window.location.replace(`http://127.0.0.1:5501/front/confirmation.html/${body.orderID}`);
-            const orderID = document.getElementById('orderId')
-            orderID.innerHTML = body.orderID
+            window.location = `confirmation.html?orderID=${body.orderID}`;
         })
     }
 })
