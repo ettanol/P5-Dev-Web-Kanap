@@ -1,4 +1,3 @@
-let pageTitle = document.title
 const img = document.querySelector('.item__img')
 const title = document.getElementById('title')
 const price = document.getElementById('price')
@@ -20,7 +19,7 @@ function getProductInfo() {
         })
         .then(product => {
             // display the infos in the DOM
-            pageTitle = `${product.name}`
+            document.title = `${product.name}`
             title.innerHTML = `${product.name}`
             img.innerHTML = `<img src=${product.imageUrl} alt=${product.altText}>`
             price.innerHTML = `${product.price}`
