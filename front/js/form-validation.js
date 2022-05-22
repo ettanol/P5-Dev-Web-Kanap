@@ -2,7 +2,7 @@ const form = document.getElementsByClassName('cart__order__form__question')
 const order = document.getElementById('order')
 
 let isValidArray = [false, false, false, false, false]
-let contact = [{firstName : ""},{lastName : ""},{address : ""},{city : ""},{email : ""}]
+let contact = {firstName : "",lastName : "",address : "",city : "",email : ""}
 
 let productsString = localStorage.getItem('products')
 let products = JSON.parse(productsString)
@@ -41,7 +41,7 @@ const matches = () => {
                 if (match[0] == array[0]) {
                     document.getElementById(`${name}ErrorMsg`).innerHTML = `${name} valide`
                     isValid = true
-                    contact.id = value
+                    contact[id] = value
                     isValidArray.splice(index, 1, isValid)
                 } else {
                     document.getElementById(`${name}ErrorMsg`).innerHTML = `${name} non valide`
@@ -76,10 +76,7 @@ const getProductsID = () => {
 }
 getProductsID()
 
-const productID = [
-    {contact : contact},
-    {products : productsID}
-]
+const productID = {contact : contact, products : productsID}
 
 
 order.addEventListener('click', (e) => {
@@ -87,15 +84,16 @@ order.addEventListener('click', (e) => {
     if (isValidArray.includes(false)) {
         alert ("Veuillez vérifier le formulaire")
     } else {
-        products.forEach( product => {
-            fetch("http://localhost:3000/api/products/order", {
-                method: "POST",
-                headers: { 
-                    'Accept': 'application/json', 
-                    'Content-Type': 'application/json' 
-                },
-                body: JSON.stringify(productID)
-            })
+        fetch("http://localhost:3000/api/products/order", {
+            method: "POST",
+            headers: { 
+                'Accept': 'application/json', 
+                'Content-Type': 'application/json' 
+            },
+            body: JSON.stringify(productID)
+        })
+        .then(res => {
+
         })
     }
 })

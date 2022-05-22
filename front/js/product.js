@@ -20,7 +20,7 @@ function getProductInfo() {
         })
         .then(product => {
             // display the infos in the DOM
-            pageTitle.value = product.name
+            pageTitle = `${product.name}`
             title.innerHTML = `${product.name}`
             img.innerHTML = `<img src=${product.imageUrl} alt=${product.altText}>`
             price.innerHTML = `${product.price}`
@@ -38,7 +38,7 @@ const addToCart = document.getElementById('addToCart')
 const quantity = document.getElementById('quantity')
 
 // add the product to the local storage
-function addToLocalStorage() {
+addToCart.addEventListener('click', () => {
     if (localStorage.length === 0) { 
         var products = []
         // add the product to the list
@@ -82,17 +82,6 @@ function addToLocalStorage() {
             if (productToCheck.quantity !== 0) {
                 countOfProducts = products
                                     .push(productToCheck)
-
-                // not working
-                for (i =0; i < products.length -1; i++) {
-                    previousProductToSort = products[i].id[0]
-                    nextProductToSort = products[i+1].id[0]
-                    if (typeof(previousProductToSort) === typeof(nextProductToSort)){
-                        if (previousProductToSort <= nextProductToSort){
-                            products.sort(() => {nextProductToSort -previousProductToSort})
-                    }}
-                }
-                // not working
                 alert("Le produit a bien été ajouté à votre panier")
             } else {
                 alert("Veuillez ajouter au moins un produit.")
@@ -102,6 +91,4 @@ function addToLocalStorage() {
         let productsString = JSON.stringify(products)
         localStorage.setItem('products', productsString)
 }
-
-
-addToCart.addEventListener('click', addToLocalStorage)
+)

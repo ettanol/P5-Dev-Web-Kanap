@@ -1,30 +1,3 @@
-window.addEventListener('DOMContentLoaded',
-    () => {
-        let i=0
-        // wait for localStorage to load
-        let checkLocalStorage = new Promise((resolve, reject) => {   
-            let productsString = localStorage.getItem('products')
-            products = JSON.parse(productsString)
-            if(products.length !== null) {
-                resolve(products)
-            } else {
-                reject('failed')
-           }
-        })
-          
-        checkLocalStorage.then((products) => { 
-              while(i < products.length) {
-              addProductToCart(i)
-              i++
-              }
-          } ,
-          (error) => { console.log(error) }
-        ) .catch ((error) => {
-            throw error
-        })            
-    }
-)
-
 // get elements from the dom
 let cartItems = document.getElementById('cart__items')
 let totalQuantity = document.getElementById('totalQuantity')
@@ -35,10 +8,23 @@ let cart = []
 let itemsInThecart = 0
 let total = 0
 let price = 0
+let i=0
+
+// wait for localStorage to load   
+let productsString = localStorage.getItem('products')
+products = JSON.parse(productsString)
+
+if (localStorage.length !== 0) {
+    while(i < products.length) {
+        displayCartProducts(i)
+        i++
+    }
+}
+
 
 // waiting for products to be loaded then display them to the cart page
-async function addProductToCart(i) {
-    let item = await products[i]
+function displayCartProducts(i) {
+    let item = products[i]
     fetch(`http://localhost:3000/api/products/${item.id}`)
     .then(res => {
         if(res.ok) {
