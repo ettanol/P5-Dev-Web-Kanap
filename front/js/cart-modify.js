@@ -1,3 +1,4 @@
+// setTimeout used to wait for infos to be loaded 
 setTimeout(() => {
     let itemQuantity = cartItems.getElementsByClassName('itemQuantity')
     let productPrices = document.querySelectorAll('.cart__item__content__description > p:last-child')
@@ -81,7 +82,6 @@ setTimeout(() => {
 }, 1000)
 
 // form validation
-
 const form = document.getElementsByClassName('cart__order__form__question')
 const order = document.getElementById('order')
 
