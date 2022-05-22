@@ -1,8 +1,8 @@
-const orderID = document.getElementById('orderID')
+const order = document.getElementById('orderId')
 
 // get orderID from the URL
 const params = new
 URLSearchParams(document.location.search)
-const orderId = params.get("orderId")
+const orderId = params.get("orderID")
 
-orderID.innerHTML = orderId
+order.innerHTML = orderId

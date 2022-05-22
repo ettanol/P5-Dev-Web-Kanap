@@ -1,4 +1,3 @@
-// setTimeout to wait for the products to load, otherwise can't modify it
 setTimeout(() => {
     let itemQuantity = cartItems.getElementsByClassName('itemQuantity')
     let productPrices = document.querySelectorAll('.cart__item__content__description > p:last-child')
@@ -83,7 +82,7 @@ setTimeout(() => {
 
 // form validation
 
-const form = document.querySelectorAll('cart__order__form__question')
+const form = document.getElementsByClassName('cart__order__form__question')
 const order = document.getElementById('order')
 
 let isValidArray = [false, false, false, false, false]
@@ -147,7 +146,7 @@ matches()
 // get product IDs
 let productsID = []
 const getProductsID = () => {
-    if (localStorage !== 0) {
+    if (localStorage.length != 0) {
         products.forEach(product => {
             fetch(`http://localhost:3000/api/products/${product.id}`)
             .then(res => {
@@ -171,10 +170,9 @@ order.addEventListener('click', (e) => {
     e.preventDefault()
     if (isValidArray.includes(false)) {
         alert ("Veuillez vérifier le formulaire")
+    } else if (localStorage.length == 0) {
+        alert("Veuillez ajouter au moins un produit")
     } else {
-        form.forEach(() => {
-            form.input.value = ""
-        })
         fetch("http://localhost:3000/api/products/order", {
             method: "POST",
             headers: { 
@@ -189,8 +187,11 @@ order.addEventListener('click', (e) => {
             }
         })
         .then ((body) => {
-            window.location = `confirmation.html?orderID=${body.orderID}`;
+            window.location = `confirmation.html?orderID=${body.orderId}`
+        })
+        .then(() => {
+            localStorage.clear()
+            form.input.value = ""
         })
     }
 })
-
