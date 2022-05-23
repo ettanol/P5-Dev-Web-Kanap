@@ -101,22 +101,18 @@ const matches = () => {
             let id = e.currentTarget.id
             let value = e.currentTarget.value
             let expression = /^([\p{L}]{1,20}( |-|'|\.)? ?){1,4}/gu
-            let array = value.split(' ')
+            let array = []
+            let countArray = array.push(value)
             switch(name) {
-                case("Prénom" || "Nom"): 
-                // array.join helps including text with spaces
-                array = [array.join(' ')]
-                break 
                 case ("Email") :
                 expression = /^[-\p{L}0-9#!%$‘&+*–/=?^_`.{|}~]+@{1}[a-z]{1,15}\.{1}[a-z]{2,5}(\.[a-z]{2,5})?$/gu
+                array = value.split(' ')
                 break
                 case("Adresse") : 
                 expression = /^([0-9]{1,4})?( +|,)?( *)([\p{L}]{2,9}\.?)( |-|')(([\p{L}]{2,12})( |-|')?){1,5}/gu
-                array = [array.join(' ')]
                 break
                 case("Ville") : 
                 expression = /^([0-9]{5})? ?([\p{L}\p{M}]+( |-)?){1,4}/gu
-                array = [array.join(' ')]
                 break
             }
             let testResult = expression.test(value)
@@ -127,12 +123,11 @@ const matches = () => {
                     document.getElementById(`${name}ErrorMsg`).innerHTML = `${name} valide`
                     isValid = true
                     contact[id] = value
-                    isValidArray.splice(index, 1, isValid)
                 } else {
                     document.getElementById(`${name}ErrorMsg`).innerHTML = `${name} non valide`
                     isValid = false
-                    isValidArray.splice(index, 1, isValid)
                 }
+                isValidArray.splice(index, 1, isValid)
             } else {
                 document.getElementById(`${name}ErrorMsg`).innerHTML = `${name} non valide`
                 isValid = false
