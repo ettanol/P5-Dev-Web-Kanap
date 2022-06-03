@@ -1,5 +1,4 @@
-// setTimeout used to wait for infos to be loaded 
-setTimeout(() => {
+const addListeners = () => {
     let itemQuantity = cartItems.getElementsByClassName('itemQuantity')
     let productPrices = document.querySelectorAll('.cart__item__content__description > p:last-child')
     let deleteItems = cartItems.getElementsByClassName('deleteItem')
@@ -11,6 +10,10 @@ setTimeout(() => {
         let productPrice = productPrices[i]
         let deleteItem = deleteItems[i]
         let index = i
+        const addToLocalStorage = () => {
+        productsString = JSON.stringify(products)
+        localStorage.setItem('products', productsString)
+        }
         
         // update the cart
         item.addEventListener('change', (e) => {
@@ -39,8 +42,7 @@ setTimeout(() => {
                         totalPrice.innerHTML = parseInt(price)
                 
                         // add the updated array to localStorage
-                        productsString = JSON.stringify(products)
-                        localStorage.setItem('products', productsString)
+                        addToLocalStorage()
                     })
             }
             getPrice()
@@ -71,15 +73,15 @@ setTimeout(() => {
                         totalPrice.innerHTML = parseInt(price)
                         
                         // add the updated array to localStorage
-                        productsString = JSON.stringify(products)
-                        localStorage.setItem('products', productsString)            
+                        addToLocalStorage()          
                     })
                 }
                 getPrice()
             }
         })
     }
-}, 1000)
+}
+addListeners()
 
 // form validation
 const form = document.getElementsByClassName('cart__order__form__question')

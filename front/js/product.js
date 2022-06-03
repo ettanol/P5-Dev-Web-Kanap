@@ -38,31 +38,20 @@ const quantity = document.getElementById('quantity')
 
 // add the product to the local storage
 addToCart.addEventListener('click', () => {
-    if (localStorage.length === 0) { 
-        var products = []
-        // add the product to the list
-        var product = {
-                        id : `${id}`,
-                        quantity : parseInt(quantity.value),
-                        color : color.value,
-        }
-        if (product.quantity !== 0) {
-            var countOfProducts = products.push(product)
-            alert("Le produit a bien été ajouté à votre panier")
-        } else {
-            alert("Veuillez ajouter au moins un produit.")
-        }
-    } else {
-        // retrieve all products already added
-        let productsString = localStorage.getItem('products')
+    let productsString = localStorage.getItem('products')
+    let products = []
+    if(productsString) {
         products = JSON.parse(productsString)
-        let productToCheck =
-            {
-                id: `${id}`,
-                quantity : parseInt(quantity.value),
-                color : color.value,
-
-            }
+    }
+    // create a product to be verified
+    let productToCheck = {
+        id : `${id}`,
+        quantity : parseInt(quantity.value),
+        color : color.value,
+    }
+    if (productToCheck.quantity === 0) { 
+        alert("Veuillez ajouter au moins un produit.")
+    } else {
         // if there's already a product with same color and same id
         if(products.find(product => {
                 if(product.id === productToCheck.id && product.color === productToCheck.color) {
@@ -78,16 +67,12 @@ addToCart.addEventListener('click', () => {
             alert("Votre panier est bien mis à jour")
         } else {
             //  add the product to the list
-            if (productToCheck.quantity !== 0) {
                 countOfProducts = products
                                     .push(productToCheck)
                 alert("Le produit a bien été ajouté à votre panier")
-            } else {
-                alert("Veuillez ajouter au moins un produit.")
-            }
         }
     }
-        let productsString = JSON.stringify(products)
+        productsString = JSON.stringify(products)
         localStorage.setItem('products', productsString)
 }
 )
