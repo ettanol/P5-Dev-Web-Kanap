@@ -16,7 +16,7 @@ const addListeners = () => {
         }
         
         // update the cart
-        item.addEventListener('change', (e) => {
+        item.addEventListener('change', async (e) => {
             // update quantity
             let value = e.currentTarget.value
             newQuantity = parseInt(value)
@@ -28,28 +28,28 @@ const addListeners = () => {
             // get the price of the specific product
             const getPrice = () => {
                 fetch(`http://localhost:3000/api/products/${product.id}`)
-                    .then(res => {
-                        if(res.ok) {
-                            return res.json()
-                        }
-                    })
-                    .then(product => {
-                        // update price
-                        priceOfProduct = newQuantity * product.price
-                        productPrice.textContent = `${parseInt(priceOfProduct)} €`
+                .then(res => {
+                    if(res.ok) {
+                        return res.json()
+                    }
+                })
+                .then(product => {
+                    // update price
+                    priceOfProduct = newQuantity * product.price
+                    productPrice.textContent = `${parseInt(priceOfProduct)} €`
 
-                        price = price + parseInt(product.price * quantityToAdd)
-                        totalPrice.innerHTML = parseInt(price)
-                
-                        // add the updated array to localStorage
-                        addToLocalStorage()
-                    })
+                    price = price + parseInt(product.price * quantityToAdd)
+                    totalPrice.innerHTML = parseInt(price)
+            
+                    // add the updated array to localStorage
+                    addToLocalStorage()
+                })
             }
             getPrice()
         })
 
         // delete an item from the cart
-        deleteItem.addEventListener('click', (e) => {
+        deleteItem.addEventListener('click', async (e) => {
             // delete from localStorage and from the page
             if(confirm ("Souhaitez-vous supprimer cet article?")) {
                 e.currentTarget.closest('.cart__item').remove()
@@ -104,7 +104,7 @@ const matches = () => {
             let value = e.currentTarget.value
             let expression = /^([\p{L}]{1,20}( |-|'|\.)? ?){1,4}/gu
             let array = []
-            let countArray = array.push(value)
+            array.push(value)
             switch(name) {
                 case ("Email") :
                 expression = /^[-\p{L}0-9#!%$‘&+*–/=?^_`.{|}~]+@{1}[a-z]{1,15}\.{1}[a-z]{2,5}(\.[a-z]{2,5})?$/gu
@@ -114,27 +114,21 @@ const matches = () => {
                 expression = /^([0-9]{1,4})?( +|,)?( *)([\p{L}]{2,9}\.?)( |-|')(([\p{L}]{2,12})( |-|')?){1,5}/gu
                 break
                 case("Ville") : 
-                expression = /^([0-9]{5})? ?([\p{L}\p{M}]+( |-)?){1,4}/gu
+                expression = /^([0-9]{5})? ?([\p{L}\p{M}]+( |-|')?){1,4}/gu
                 break
             }
             let testResult = expression.test(value)
-            if(testResult) {
-                let match = value.match(expression)
-                let isValid = false
-                if (match[0] == array[0]) {
-                    document.getElementById(`${name}ErrorMsg`).innerHTML = `${name} valide`
-                    isValid = true
-                    contact[id] = value
-                } else {
-                    document.getElementById(`${name}ErrorMsg`).innerHTML = `${name} non valide`
-                    isValid = false
-                }
-                isValidArray.splice(index, 1, isValid)
+            let match = value.match(expression)
+            let isValid = false
+            if(testResult && match[0] == array[0]) {
+                document.getElementById(`${name}ErrorMsg`).innerHTML = `${name} valide`
+                isValid = true
+                contact[id] = value
             } else {
                 document.getElementById(`${name}ErrorMsg`).innerHTML = `${name} non valide`
                 isValid = false
-                isValidArray.splice(index, 1, isValid)
             }
+            isValidArray.splice(index, 1, isValid)
         })
     }
 }
@@ -152,7 +146,7 @@ const getProductsID = () => {
                 }
             })
             .then(product => {
-                let countOfProductsID = productsID.push(product._id)
+                productsID.push(product._id)
                 return productsID
             })
         })
