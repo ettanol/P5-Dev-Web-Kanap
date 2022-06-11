@@ -10,12 +10,11 @@ let total = 0
 let price = 0
 let i = 0
 
-// wait for localStorage to load   
-let productsString = localStorage.getItem('products')
-products = JSON.parse(productsString)
-
 const populateCart = async () => {
     if (localStorage.length !== 0) {
+        // wait for localStorage to load   
+        let productsString = localStorage.getItem('products')
+        products = await JSON.parse(productsString)
         cart = await Promise.all(
             products.map(async item => await displayCartProducts(item))
         )
