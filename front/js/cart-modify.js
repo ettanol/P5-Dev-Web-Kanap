@@ -103,8 +103,6 @@ const matches = () => {
             let id = e.currentTarget.id
             let value = e.currentTarget.value
             let expression = /^([\p{L}]{1,20}( |-|'|\.)? ?){1,4}/gu
-            let array = []
-            array.push(value)
             switch(name) {
                 case ("Email") :
                 expression = /^[-\p{L}0-9#!%$‘&+*–/=?^_`.{|}~]+@{1}[a-z]{1,15}\.{1}[a-z]{2,5}(\.[a-z]{2,5})?$/gu
@@ -120,7 +118,7 @@ const matches = () => {
             let testResult = expression.test(value)
             let match = value.match(expression)
             let isValid = false
-            if(testResult && match[0] == array[0]) {
+            if(testResult && match[0] == value) {
                 document.getElementById(`${name}ErrorMsg`).innerHTML = `${name} valide`
                 isValid = true
                 contact[id] = value
