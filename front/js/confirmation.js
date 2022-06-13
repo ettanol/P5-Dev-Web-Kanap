@@ -5,4 +5,4 @@ const params = new
 URLSearchParams(document.location.search)
 const orderId = params.get("orderID")
 
-order.innerHTML = orderId
+order.innerHTML = orderId // display it for the user
